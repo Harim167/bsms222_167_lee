@@ -203,8 +203,18 @@ c <- -1
 # **2.3 Exercises**
 
 1. What is the sum of the first 100 positive integers? The formula for the sum of integers $1$ through $n$ is $n(n+1)/2$. Define $n = 100$ and then use R to compute the sum of $1$ through $100$ using the formula. What is the sum?
+```{r}
+n <- 100
+n * (n+1) / 2
+#> [1] 5050
+```
 
 2. Now use the same formula to compute the sum of the integers from 1 through 1,000.
+```{r}
+n <- 1000
+n * (n+1) / 2
+#> [1] 500500
+```
 
 3. Look at the result of typing the following code into R:
 ```{r}
@@ -217,8 +227,23 @@ a. `sum` creates a list of numbers and `seq` adds them up.
 b. `seq` creates a list of numbers and `sum` adds them up.
 c. `seq` creates a random list and `sum` computes the sum of 1 through 1,000.
 d. `sum` always returns the same number.
+```{r}
+help(seq)
+#> Generate regular sequences. seq is a standard generic with a default method. seq.int is a primitive which can be much faster but has a few restrictions. seq_along and seq_len are very fast primitives for two common cases.
+#> seq(from, to), seq {base}
+help(sum)
+#> sum returns the sum of all the values present in its arguments.
 
-4. In math and programming, we say that we evaluate a function when we replace the argument with a given number. So if we type `sqrt(4)`, we evaluate the `sqrt` function. In R, you can evaluate a function inside another function. The evaluations happen from the inside out. Use one line of code to compute the log, in base 10, of the square root of 100.
+# answer: 'seq' creates a list of numbers and 'sum' adds them up.(b)
+          # 'seq' doesn't create a 'random' list. It is regular.
+```
+
+4. In math and programming, we say that we evaluate a function when we replace the argument with a given number. So if we type `sqrt(4)`, we evaluate the `sqrt` function. In R, you can evaluate a function inside another function. The evaluations lhappen from the inside out. Use one line of code to compute the log, in base 10, of the square root of 100.
+```{r}
+log(sqrt(100), base = 10)
+#> [1] 1
+```
+
 
 5. Which of the following will always return the numeric value stored in `x`? You can try out examples and use the help system if you want.
 
@@ -226,6 +251,35 @@ a. `log(10^x)`
 b. `log10(x^10)`
 c. `log(exp(x))`
 d. `exp(log(x, base = 2))`
+
+```{r}
+help(exp)
+
+x <- 10
+print(x)
+#> [1] 10
+log(10^x)
+#> [1] 23.02585
+log10(x^10)
+#> [1] 10
+log(exp(x))
+#> [1] 10
+exp(log(x, base = 2))
+#> [1] 27.71373
+
+x <- 1000
+print(x)
+#> [1] 1000
+log10(x^10)
+#> [1] 30
+log(exp(x))
+#> [1] Inf
+exp(log(x, base = 2))
+#> [1] 21285.56
+
+#answer) I think there is not an answer which always return the numeric value stored in `x`.
+
+```
 
 # **2.4 Data Types**
 
@@ -239,7 +293,7 @@ To work efficiently in R, it is important to learn the different types of variab
 
 ## **2.4.1 Data frames**
 
-Up to now, the variables we have defined are just one number. This is not very useful for storing data. The most common way of storing a dataset in R is in a data frame. Conceptually, we can think of a data frame as a table with rows representing observations and the different variables reported for each observation defining the columns. Data frames are particularly useful for datasets because we can combine different data types into one object.
+Up to now, the variables we have defined are just one number. This is not very useful for storing data. The most common way of storing a dataset in R is in a _data frame_. Conceptually, we can think of a data frame as a table with rows representing observations and the different variables reported for each observation defining the columns. Data frames are particularly useful for datasets because we can combine different data types into one object.
 
 A large proportion of data analysis challenges start with data stored in a data frame. For example, we stored the data for our motivating example in a data frame. You can access this dataset by loading the **dslabs** library and loading the `murders` dataset using the `data` function:
 ```{r}
@@ -495,26 +549,94 @@ murders[2:3, ]
 library(dslabs)
 data(murders)
 ```
+
 Use the function `str` to examine the structure of the `murders` object. Which of the following best describes the variables represented in this data frame?
 
 a. The 51 states.
 b. The murder rates for all 50 states and DC.
 c. The state name, the abbreviation of the state name, the state’s region, and the state’s population and total number of murders for 2010.
 d. `str` shows no relevant information.
+```{r}
+# answer: c
+
+str(murders)
+#>'data.frame':	51 obs. of  5 variables:
+#> $ state     : chr  "Alabama" "Alaska" "Arizona" "Arkansas" ...
+#> $ abb       : chr  "AL" "AK" "AZ" "AR" ...
+#> $ region    : Factor w/ 4 levels "Northeast","South",..: 2 4 4 2 4 4 1 2 2 2 ...
+#> $ population: num  4779736 710231 6392017 2915918 37253956 ...
+#> $ total     : num  135 19 232 93 1257 ...
+
+# I got 5 variables; state, abb, region, population, and total. So the answer is c. 
+```
 
 2. What are the column names used by the data frame for these five variables?
+```{r}
+colnames(data.frame())
+#> character(0)
+# answer: character
+```
 
 3. Use the accessor `$` to extract the state abbreviations and assign them to the object `a`. What is the class of this object?
+```{r}
+a <- state.abb
+class(a)
+#> [1] "character"
+```
 
 4. Now use the square brackets to extract the state abbreviations and assign them to the object `b`. Use the `identical` function to determine if `a` and `b` are the same.
+```{r}
+data("murders")
+#> murders[ , 1]
+# [1] "Alabama"              "Alaska"              
+# [3] "Arizona"              "Arkansas"            
+# [5] "California"           "Colorado"            
+# [7] "Connecticut"          "Delaware"            
+# [9] "District of Columbia" "Florida"             
+#[11] "Georgia"              "Hawaii"              
+#[13] "Idaho"                "Illinois"            
+#[15] "Indiana"              "Iowa"                
+#[17] "Kansas"               "Kentucky"            
+#[19] "Louisiana"            "Maine"               
+#[21] "Maryland"             "Massachusetts"       
+#[23] "Michigan"             "Minnesota"           
+#[25] "Mississippi"          "Missouri"            
+#[27] "Montana"              "Nebraska"            
+#[29] "Nevada"               "New Hampshire"       
+#[31] "New Jersey"           "New Mexico"          
+#[33] "New York"             "North Carolina"      
+#[35] "North Dakota"         "Ohio"                
+#[37] "Oklahoma"             "Oregon"              
+#[39] "Pennsylvania"         "Rhode Island"        
+#[41] "South Carolina"       "South Dakota"        
+#[43] "Tennessee"            "Texas"               
+#[45] "Utah"                 "Vermont"             
+#[47] "Virginia"             "Washington"          
+#[49] "West Virginia"        "Wisconsin"           
+#[51] "Wyoming"             
+```
 
 5. We saw that the `region` column stores a factor. You can corroborate this by typing:
 ```{r}
 class(murders$region)
 ```
 With one line of code, use the function `levels` and `length` to determine the number of regions defined by this dataset.
+```{r}
+length(levels(murders$region))
+#> [1] 4
+table(state.region)
+state.region
+#   Northeast          South   North Central    West 
+#           9            16        12            13 
+```
 
 6. The function `table` takes a vector and returns the frequency of each element. You can quickly see how many states are in each region by applying this function. Use this function in one line of code to create a table of states per region.
+```{r}
+table(state.region)
+state.region
+#  Northeast         South North Central          West 
+#           9            16            12            13 
+```
 
 # **2.6 Vectors**
 
