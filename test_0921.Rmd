@@ -489,16 +489,16 @@ heights %>%
 ```
 Note that here we need to use the dot operator. The tibble created by `group_by` is piped to `do`. Within the call to `do`, the name of this tibble is `.` and we want to send it to `my_summary`. If you do not use the dot, then `my_summary` has no argument and returns an error telling us that argument `"dat"` is missing. You can see the error by typing:
 ```{r}
-heights %>%
-  group_by(sex) %>%
-  do(my_summary())
+# heights %>%
+#  group_by(sex) %>%
+#  do(my_summary())
 ```
 
 If you do not use the parenthesis, then the function is not executed and instead `do` tries to return the function. This gives an error because `do` must always return a data frame. You can see the error by typing:
 ```{r}
-heights %>%
-  group_by(sex) %>%
-  do(my_summary)
+#heights %>%
+#  group_by(sex) %>%
+#  do(my_summary)
 ```
 
 ## **4.13 The purrr package**
@@ -532,16 +532,16 @@ This produces the same results as the `sapply` call shown above.
 
 A particularly useful **purrr** function for interacting with the rest of the tidyverse is `map_df`, which always returns a tibble data frame. However, the function being called needs to return a vector or a list with names. For this reason, the following code would result in a Argument 1 must have names error:
 ```{r}
-s_n <- map_df(n, compute_s_n)
+# s_n <- map_df(n, compute_s_n)
 ```
 
 We need to change the function to make this work:
 ```{r}
-classcompute_s_n <- function(n){
-  x <- 1:n
-  tibble(sum = sum(x))
-}
-s_n <- map_df(n, compute_s_n)
+# classcompute_s_n <- function(n){
+#  x <- 1:n
+#  tibble(sum = sum(x))
+#}
+#s_n <- map_df(n, compute_s_n)
 
 ```
 The **purrr** package provides much more functionality not covered here. For more details you can consult this online resource.
@@ -567,8 +567,8 @@ murders %>%
     abb %in% c("WA", "OR", "CA") ~ "West Coast",
     region == "South" ~ "South",
     TRUE ~ "Other")) 
-  group_by(group) %>%
-  summarize(rate = sum(total) / sum(population) * 10^5) 
+ # group_by(group) %>%
+ # summarize(rate = sum(total) / sum(population) * 10^5) 
 ```
 
 
@@ -576,12 +576,12 @@ murders %>%
 
 A common operation in data analysis is to determine if a value falls inside an interval. We can check this using conditionals. For example, to check if the elements of a vector `x` are between `a` and `b` we can type
 ```{r}
-x >= a & x <= b
+# x >= a & x <= b
 ```
 
 However, this can become cumbersome, especially within the tidyverse approach. The `between` function performs the same operation.
 ```{r}
-between(x, a, b)
+# between(x, a, b)
 ```
 
 ## **4.15 Exercises**
